@@ -996,7 +996,7 @@ knitr::include_graphics('images/rmarkdown_process.png')
   - code chunk: 코드 입력 부분
   - markdown: 텍스트 부분
   
-```{r echo = FALSE, fig.cap='rmarkdown 구성 요소'}
+```{r echo = FALSE, fig.cap='rmarkdown 구성 요소', out.width = "100%"}
 knitr::include_graphics('images/rmd_part.png')
 ```
   
