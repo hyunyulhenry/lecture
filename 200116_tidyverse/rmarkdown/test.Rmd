@@ -1,0 +1,18 @@
+\begin{equation} 
+\begin{split}
+
+\epsilon \epsilon' &=
+
+\begin{bmatrix} \epsilon_1 \\ \epsilon_2 \\ \vdots \\ \epsilon_n \\ \end{bmatrix}
+
+\begin{bmatrix} \epsilon_1 & \epsilon_2 \dots \epsilon_n \end{bmatrix}
+
+&= \begin{bmatrix} 
+\epsilon_{1}\epsilon_{1} & \epsilon_{1}\epsilon_{2} & \dots & \epsilon_{1}\epsilon_{n} \\
+\epsilon_{2}\epsilon_{1} & \epsilon_{2}\epsilon_{2} & \dots & \epsilon_{2}\epsilon_{n} \\
+\vdots & \vdots & \ddots & \vdots \\
+\epsilon_{n}\epsilon_{1} & \epsilon_{n}\epsilon_{2} & \dots & \epsilon_{n}\epsilon_{n}
+\end{bmatrix}
+
+\end{split}
+\end{equation} 

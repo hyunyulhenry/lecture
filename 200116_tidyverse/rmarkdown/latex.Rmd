@@ -1,0 +1,4 @@
+회귀식은 일반적으로 $y = ax + b$ 이며, 3 Factor 모형은 다음과 같습니다.
+
+$$R_{i} - R_f = \alpha\ + \beta_1(R_m - R_f) + \beta_2SMB + \beta_3HML$$
+

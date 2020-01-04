@@ -1,0 +1,8 @@
+\begin{equation} 
+\begin{split}
+\hat \beta_{OLS} & = (X'X)^{-1}X'Y \\
+& = (X'X)^{-1}X'(X\beta+\epsilon) \\
+& = (X'X)^{-1}X'X\beta + (X'X)^{-1}X'\epsilon \\
+& = \beta + (X'X)^{-1}X'\epsilon 
+\end{split}
+\end{equation} 

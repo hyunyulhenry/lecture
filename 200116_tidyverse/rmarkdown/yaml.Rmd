@@ -1,0 +1,13 @@
+---
+title: "R Markdown"
+author: "이현열"
+date: "2020-01-01"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 2
+    number_sections: TRUE
+header-includes:
+- \usepackage{booktabs}
+---
