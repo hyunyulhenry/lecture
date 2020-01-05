@@ -55,3 +55,6 @@ cran_pkg_trend = function() {
   return(pkgs)
   
 }
+
+tbl = cran_pkg_trend()
+write.csv(tbl, 'package_trend.csv')
