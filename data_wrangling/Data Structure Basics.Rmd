@@ -1,0 +1,43 @@
+# Data Structure Basics
+
+R의 데이터구조는 크게 벡터, 리스트, 매트릭스, 데이터프레임으로 나누어집니다. (array는 잘 사용되지 않습니다) 
+
+```{r, echo = FALSE}
+library(kableExtra)
+
+data.frame(
+  'Dimension' = c('1D', '2D', 'nD'),
+  'Homogeneous' = c('Atomic Vector', 'Matrix', 'Array'),
+  'Heterogeneous' = c('List', 'Data frame', '')
+) %>% kable(booktabs = TRUE,
+            align = "c") %>%
+  kableExtra::kable_styling(bootstrap_options  = c("striped", "hover"))
+```
+
+Homogenous는 컬럼간 데이터 구조가 같은 경우, Heterogeneous는 다른 경우입니다.
+
+## 구조 파악하기
+
+`str()` 함수를 이용해 각 데이터의 구조(structure)를 파악할 수 있습니다.
+
+```{r}
+vector = 1:10
+list = list(item1 = 1:10, item2 = LETTERS[1:18])
+matrix = matrix(1:12, nrow = 4)
+df = data.frame(item1 = 1:18, item2 = LETTERS[1:18])
+```
+
+```{r}
+vector
+str(vector)
+
+list
+str(list)
+
+matrix
+str(matrix)
+
+df
+str(df)
+```
+

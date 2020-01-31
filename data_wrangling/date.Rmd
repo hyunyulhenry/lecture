@@ -1,0 +1,117 @@
+# Date
+
+날짜, 시간에 관련된 데이터는 R의 기본함수 및 `lubridate` 패키지를 이용해 쉽게 다룰 수 있습니다.
+
+## 현재 날짜 및 시간 
+
+```{r}
+Sys.timezone()
+Sys.Date()
+Sys.time()
+```
+
+기본 함수를 통해 현재 타임존 및 날짜, 시간을 확인할 수 있습니다.
+
+## 문자열을 날짜로 변경하기
+
+
+```{r}
+x = c('2015-07-01', '2015-08-01', '2015-09-01')
+x_date = as.Date(x)
+str(x_date)
+```
+
+`as.Date()` 함수를 이용할 경우, 문자열 형태가 Date로 변경됩니다.
+
+```{r}
+y = c('07/01/2015', '08/01/2015', '09/01/2015')
+as.Date(y, format = '%m/%d/%Y')
+```
+
+YYYY-MM-DD 형태가 아닌 다른 형태로 입력된 경우, format을 직접 입력하여 Date 형태로 변경할 수 있습니다.
+
+```{r}
+library(lubridate)
+ymd(x)
+mdy(y)
+```
+
+`lubridate` 패키지를 이용할 경우 YYYY-MM-DD 형태는 `ymd()`, MM-DD-YYYY 형태는 `mdy()` 함수를 사용해 손쉽게 Date 형태로 변경할 수 있습니다. 이 외에도 lubridate에는 Date 형태로 변경하기 위한 다양한 함수가 존재합니다.
+
+```{r, echo = FALSE}
+library(kableExtra)
+
+data.frame(
+  '순서' = c('year, month, day',
+           'year, day, month',
+           'month, day, year',
+           'day, month, year',
+           'hour, minute',
+           'hour, minute, second',
+           'year, month, day, hour, minute, secod'),
+  '함수' = c('ymd()', 'ydm()', 'mdy()', 'dmy()', 'hm()', 'hms()', 'ymd_hms()')
+) %>% kable(booktabs = TRUE,
+            align = "c") %>%
+  kableExtra::kable_styling(bootstrap_options  = c("striped", "hover"))
+```
+
+## 날짜 관련 정보 추출
+
+`lubridate` 패키지에는 날짜 관련 정보를 추출할 수 있는 다양한 함수가 존재합니다.
+
+```{r, echo = FALSE}
+library(kableExtra)
+
+data.frame(
+  '정보' = c('Year', 'Month', 'Week', 'Day of year', 'Day of month',
+           'Day of week', 'Hour', 'Minute', 'Second', 'Time zone'),
+  '함수' = c('year()', 'month()', 'week()', 'yday()', 'mday()',
+           'wday()', 'hour()', 'minute()', 'second()', 'tz()')
+) %>% kable(booktabs = TRUE,
+            align = "c") %>%
+  kableExtra::kable_styling(bootstrap_options  = c("striped", "hover"))
+```
+
+```{r}
+x = c('2015-07-01', '2015-08-01', '2015-09-01')
+
+year(x)
+month(x)
+week(x)
+```
+
+`year()`, `month()`, `week()` 함수를 통해 년도, 월, 주 정보를 확인할 수 있습니다.
+
+```{r}
+z = '2015-09-15'
+
+yday(z)
+mday(z)
+wday(z)
+```
+
+`yday()`, `mday()`, `wday()` 함수는 각각 해당 년도에서 몇번째 일인지, 해당 월에서 몇번째 일인지, 해당 주에서 몇번째 일인지를 계산합니다.
+
+```{r}
+x = ymd('2015-07-01', '2015-08-01', '2015-09-01') 
+x + years(1) - days(c(2, 9, 21))
+```
+
+날짜에서 년도와 월, 일자를 더하거나 빼는 계산 역시 가능합니다.
+
+## 날짜 순서 생성하기
+
+`seq()` 함수를 이용할 경우 날짜 벡터를 생성할 수도 있습니다.
+
+```{r}
+seq(ymd('2010-01-01'), ymd('2015-01-01'), by ='years')
+```
+
+2010년 1월 1일부터 2015년 1월 1일까지 1년을 기준으로 벡터가 생성됩니다.
+
+```{r}
+seq(ymd('2010-09-01'), ymd('2010-09-30'), by ='2 days')
+```
+
+지정 일수만큼 벡터를 생성할 수도 있습니다.
+
