@@ -1,0 +1,14 @@
+bookdown::gitbook:
+  css: style.css
+  split_by: chapter
+  config:
+    toc:
+      collapse: section
+      before: |
+        <li><a href="./">R을 이용한 데이터 랭글링</a></li>
+      after: |
+        <li><a href="http://henryquant.blogspot.com/" target="blank">Henry's Quantopia</a></li>
+    edit: null
+    download: no
+    split_bib: no
+
