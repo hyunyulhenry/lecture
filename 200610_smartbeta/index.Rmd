@@ -1,0 +1,246 @@
+---
+title: "스마트베타 분석"
+output: html_document
+---
+
+먼저 패키지와 함수를 불러옵니다.
+
+```{r}
+# open packages
+library(readxl)
+library(timetk)
+library(xts)
+library(PerformanceAnalytics)
+library(ggplot2)
+library(tibble)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(lubridate)
+library(knitr)
+library(magrittr)
+library(broom)
+library(tibbletime)
+
+# open function
+source('fun.R')
+
+options(scipen = 5)
+options(digits = 4)
+```
+
+데이터를 클랜징 해줍니다.
+
+```{r}
+raw = readxl::read_xlsx('raw.xlsx')
+
+ticker = raw %>% slice(9)
+data = raw %>% slice(-1:-13) %>%
+  set_names(ticker) %>%
+  mutate_all(as.numeric) %>%
+  rename('Date' = 'Symbol Name') %>%
+  rename('QV' = 'FnGuide 퀄리티밸류 지수') %>%
+  mutate(Date = as.Date(Date, origin = '1899-12-30')) 
+```
+
+퀄리티밸류의 그래프를 확인해보죠. (2015-09-22일 상장)
+
+```{r}
+data %>% 
+  ggplot(aes(x = Date, y = QV)) +
+  geom_line() +
+  geom_vline(xintercept = as.numeric(as.Date('2015-09-22')),
+             color = 'red', linetype = "longdash") +
+  scale_x_date(date_labels="%y",date_breaks  ="1 year")
+```
+
+18년 이후 지속적으로 하락하는 모습을 보임. 17년 이후 코스피 지수와 비교해보도록 함.
+
+```{r}
+qv_kospi =
+  data %>% select(Date, 코스피, QV) %>%
+  filter(Date >= '2017-01-01') %>%
+  rename('KOSPI' = '코스피') %>%
+  mutate_if(is.numeric, list(~./lag(.) - 1)) %>%
+  mutate(gap = QV - KOSPI) %>%
+  na.omit() %>%
+  mutate(gap = cumprod(1+gap) - 1) %>%
+  tk_xts(var = 'Date')
+  
+qv_kospi[, c('KOSPI', 'QV')] %>%  
+  plot_cumulative() + geom_vline(xintercept = as.numeric(as.Date('2019-06-01')),
+             color = 'black', linetype = "longdash") +
+  geom_vline(xintercept = as.numeric(as.Date('2020-04-01')),
+             color = 'black', linetype = "longdash") +
+  geom_col(data = fortify.zoo(qv_kospi[, c('gap')]), aes(x = Index, y = gap),
+           fill = 'blue', alpha = 0.1, width = 1)
+```
+
+사실 2019년 중반까지는 크게 차이가 없고, 19년 6월부터 차이가 벌어지는 중. 20년 4월부터는 다시 차이 줄이는 중.
+
+```{r}
+qv_kospi[, c('KOSPI', 'QV')] %>% plot_yearly()
+```
+
+[코스피 / 코스피 대형주 / 코스피 중형주 / 코스피 소형주] 각각의 흐름을 살펴보도록 하자
+
+```{r}
+kospi_ret = data %>% select(Date, contains('코스피')) %>%
+  rename('KOSPI' = '코스피', 'BIG' = '코스피대형주',
+         'MED' = '코스피중형주', 'SMALL' = '코스피소형주') %>%
+  filter(Date >= '2017-01-01') %>%
+  tk_xts(var = 'Date') %>%
+  Return.calculate()
+
+kospi_ret %>%
+  plot_cumulative()
+```
+
+대형주 대비 중형주 / 소형주가 훨씬 많이 떨어진 모습을 보임
+
+```{r}
+kospi_ret %>%  na.omit() %>% cor() %>%
+  round(., 2) %>%
+  kable() %>%  kableExtra::kable_styling()
+```
+
+전반적으로 코스피와 중/소형주의 상관관계도 대형주보다 낮은편
+
+다음으로 MKT, SMB, HML, UMD 팩터를 생성
+
+```{r}
+data_ret = data %>%
+  mutate_if(is.numeric, list(~./lag(.) - 1)) %>% na.omit()
+
+f_MKT = data_ret %>% select(Date, 코스피) %>% tk_xts(var = 'Date')
+f_SMB = data_ret %>%
+  mutate(SMB =
+              ((`Size & Book Value(2X3) 소형 - High` +
+                      `Size & Book Value(2X3) 소형 - Medium` +
+                      `Size & Book Value(2X3) 소형 - Low`) -
+              (`Size & Book Value(2X3) 대형 - High` +
+                     `Size & Book Value(2X3) 대형 - Medium` +
+                     `Size & Book Value(2X3) 대형 - Low`)) %>% divide_by(3)
+  ) %>% select(Date, SMB) %>% tk_xts(var = 'Date')
+
+f_HML = data_ret %>%
+  mutate(HML =
+              ((`Size & Book Value(2X3) 소형 - High` +
+                      `Size & Book Value(2X3) 대형 - High`) -
+                 (`Size & Book Value(2X3) 소형 - Low` +
+                     `Size & Book Value(2X3) 대형 - Low`)) %>% divide_by(2)
+  ) %>% select(Date, HML) %>% tk_xts(var = 'Date')
+
+f_UMD = data_ret %>%
+  mutate(UMD =
+              ((`Size & Momentum(2X3) 소형 - Up` +
+                      `Size & Momentum(2X3) 대형 - Up`) -
+                 (`Size & Momentum(2X3) 소형 - Down` +
+                     `Size & Momentum(2X3) 대형 - Down`)) %>% divide_by(2)
+  ) %>% select(Date, UMD) %>% tk_xts(var = 'Date')
+
+f = cbind(f_MKT, f_SMB, f_HML, f_UMD)
+colnames(f)[1] = 'MKT'
+```
+
+```{r}
+p = f["2017::"] %>% plot_cumulative()
+p + geom_vline(xintercept = as.numeric(as.Date('2015-09-22')),
+             color = 'red', linetype = "longdash") +
+  geom_vline(xintercept = as.numeric(as.Date('2019-06-01')),
+             color = 'black', linetype = "longdash")
+```
+
+
+```{r}
+data_ret %>% 
+  filter(Date >= '2019-01-01') %>%
+  select(Date, contains('High'), contains('Low')) %>%
+  set_colnames(c('Date', 'Big Value', 'Small Value', 'Big Growth', 'Small Growth')) %>%
+  tk_xts(var = 'Date') %>% plot_cumulative()
+```
+
+19년 이후 Growth가 Value 대비 더 좋은 성과. 특히 대형가치주는 매우 부진한 성과를 보임
+
+```{r}
+data_bind = data_ret %>% select(Date, QV) %>% tk_xts(var = 'Date') %>%
+  cbind(f)
+```
+
+```{r}
+reg_1 = lm(QV ~ MKT, data = data_bind)
+reg_2 = lm(QV ~ ., data = data_bind)
+
+tidy(reg_1) %>% kable() %>% kableExtra::kable_styling()
+tidy(reg_2) %>% kable() %>% kableExtra::kable_styling()
+```
+
+```{r}
+w = 1300
+coeff = list()
+tval = list()
+
+for (i in (w+1) : nrow(data_bind)) {
+  
+  temp = data_bind[i : (i -w), ]
+  reg = lm(QV ~ MKT + SMB + HML + UMD, data = temp)
+  
+  coeff[[i]] = xts(t(reg$coefficients), order.by = index(data_bind)[i])
+  tval[[i]] = xts(t(summary(reg)[["coefficients"]][, "t value"]),
+                  order.by = index(data_bind)[i])
+  
+}
+
+coeff = do.call(rbind, coeff)
+tval = do.call(rbind, tval)
+```
+
+5년 롤링 회귀계수
+
+```{r}
+coeff %>% 
+  fortify.zoo() %>% select(-'(Intercept)') %>% 
+  gather(key, value, -Index) %>%
+  ggplot(aes(x = Index, y = value, group = key)) +
+  geom_line(aes(color = key)) +
+  scale_x_date(date_labels="%y",date_breaks  ="2 year") +
+  facet_wrap(~ key, scales = 'free')
+```
+
+시장 노출도만 계속 커짐
+
+```{r}
+coeff %>% 
+  fortify.zoo() %>% select(-'(Intercept)') %>% 
+  filter(Index >= '2018-01-01') %>%
+  gather(key, value, -Index) %>%
+  ggplot(aes(x = Index, y = value, group = key)) +
+  geom_line(aes(color = key)) +
+  scale_x_date(date_labels="%y",date_breaks  ="1 year") +
+  facet_wrap(~ key, scales = 'free')
+```
+
+최근엔 가치 + 소형주도 같이 증가하지만, 시장노출도가 여전히 큰 상황. 
+
+
+```{r}
+p1 = coeff %>% 
+  fortify.zoo() %>% select(Index, '(Intercept)') %>% 
+  ggplot(aes(x = Index, y = `(Intercept)`)) +
+  geom_line() +
+  ggtitle('Alpha')
+
+p2 = tval %>% 
+  fortify.zoo() %>% 
+  select(Index, '(Intercept)') %>%
+  ggplot(aes(x = Index, y = `(Intercept)`)) +
+  geom_line() +
+  ggtitle('Alpha: t-value')
+
+gridExtra::grid.arrange(p1, p2)
+```
+
+4팩터 기준 알파가 지속적으로 감소하고 있음
+
+
+
