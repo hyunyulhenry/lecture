@@ -1,0 +1,67 @@
+---
+title: "샤프지수"
+output: html_document
+---
+
+```{r message = FALSE}
+library(quantmod)
+library(PerformanceAnalytics)
+library(magrittr)
+library(knitr)
+
+ticker = c('SPY', 'TLT', 'IEF', 'GLD', 'DBC')
+getSymbols(ticker)
+
+prices = do.call(cbind,
+                 lapply(ticker, function(x) Ad(get(x))))
+rets = Return.calculate(prices) %>% na.omit()
+```
+
+
+```{r}
+all_weather = Return.portfolio(R = rets,
+                             weights = c(0.3, 0.4, 0.15, 0.075, 0.075),
+                             rebalance_on = 'years',
+                             verbose = TRUE)
+```
+
+```{r}
+chart.CumReturns(all_weather$returns)
+chart.Drawdown(all_weather$returns)
+```
+```{r}
+stat_fun = function(x) {
+
+  stat_ret = Return.annualized(x)
+  stat_vol = StdDev.annualized(x)
+  stat_sharpe_ann = SharpeRatio.annualized(x)
+  stat_sharpe = SharpeRatio(x)[1, ]
+  
+  
+  rbind(stat_ret, stat_vol, stat_sharpe_ann, stat_sharpe) %>%
+    set_rownames(c('Return(Annual)', 'Vol(Annual)', 'Sharpe(Annual)', 'Sharpe')) %>%
+    set_colnames('Portfolio')
+}
+```
+
+
+```{r}
+all_ret = all_weather$returns
+
+x1 = all_ret %>% apply.yearly(., Return.cumulative) %>% stat_fun
+x2 = all_ret %>% apply.monthly(., Return.cumulative) %>% stat_fun
+x3 = all_ret %>% stat_fun
+
+cbind(x1, x2, x3) %>%
+  set_colnames(c('Annual', 'Monthly', 'Daily'))
+```
+
+```{r}
+w1 = 1 - (all_ret %>% apply.yearly(., Return.cumulative) %>% UpsideFrequency())
+w2 = 1 - (all_ret %>% apply.monthly(., Return.cumulative) %>% UpsideFrequency())
+w3 = 1 - (all_ret %>% UpsideFrequency)
+
+cbind(w1, w2, w3) %>%
+  set_colnames(c('Annual', 'Monthly', 'Daily'))
+```
+
