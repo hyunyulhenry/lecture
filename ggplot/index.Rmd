@@ -115,13 +115,13 @@ head(c(z$results[,3]), 50)
 
 # Data, Aesthetics, Geometrics
 
-그래픽 문법의 순서에 맞춰 그림을 쌓아나가보도록 하겠습니다. 먼저 Data는 사용될 데이터이며, Aesthetics는 x축, y축, 사이즈 등 시각적인 요소를 의미합니다.
+그래픽 문법의 순서에 맞춰 그림을 쌓아나가보도록 하겠습니다. 먼저 Data는 사용될 데이터이며, Aesthetics는 $x$축, $y$축, 사이즈 등 시각적인 요소를 의미합니다.
 
 ```{r}
 ggplot(data = diamonds, aes(x = carat, y = price))
 ```
 
-x축과 y축에 우리가 매핑한 carat과 price가 표현되었지만, 어떠한 모양(Geometrics)으로 시각화를 할지 정의하지 않았으므로 빈 그림이 생성됩니다. 다음으로 Geometrics을 통해 데이터를 그림으로 표현해주도록 하겠습니다.
+$x$축과 $y$축에 우리가 매핑한 carat과 price가 표현되었지만, 어떠한 모양(Geometrics)으로 시각화를 할지 정의하지 않았으므로 빈 그림이 생성됩니다. 다음으로 Geometrics을 통해 데이터를 그림으로 표현해주도록 하겠습니다.
 
 ```{r}
 ggplot(data = diamonds, aes(x = carat, y = price)) +
