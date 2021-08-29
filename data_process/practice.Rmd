@@ -1,0 +1,78 @@
+---
+title: "데이터 처리 실제 예제"
+author: "이현열"
+output:
+  bookdown::html_document2:
+  # html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 2
+    collapsed: TRUE
+    number_sections: TRUE
+    fig_caption: TRUE
+    
+header-includes:
+- \usepackage{booktabs}
+---
+
+먼저 예제로 사용할 French Library의 3 factor 데이터를 다운로드하도록 합니다.
+- https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html
+
+```{r}
+library(readr)
+
+temp = tempfile()
+url = 'https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip'
+download.file(url, temp, quiet = TRUE)
+
+ff = read_csv(unz(temp, "F-F_Research_Data_Factors.CSV"), skip = 3)
+head(ff)
+
+tail(ff)
+```
+# 데이터 클랜징
+
+factor 데이터는 다음과 같이 수정해야 함
+- yyyymm인 데이터와 yyyy인 데이터가 존재하므로, yyyymm인 데이터만 선택
+- Time Index에 해당하는 X1을 Date로 변경
+- Date를 월말 기준으로 변경
+- 각 숫자가 % 단위이므로, 100으로 나누어 숫자로 변환
+- NA 삭제
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(xts)
+library(magrittr)
+library(stringr)
+
+ff_mod = ff %>% 
+  rename('Date' = 'X1') %>% 
+  filter(str_length(Date) == 6) %>%
+  mutate(Date = paste0(str_sub(Date, 1, 4), '-', str_sub(Date, 5, 6) )) %>%
+  # mutate(Date = sub("(\\d{4})", "\\1-", Date)) %>% 
+  mutate_at(vars(-Date), list(~(. / 100))) %>%  
+  na.omit()
+
+head(ff_mod)
+```
+`separate()` 함수를 이용하여, Date에서 연도와 월을 각각 분해하여 Year, Month 컬럼을 생성합니다. remove 인자의 기본값은 TRUE이며, 원래 컬럼인 Date가 제거됩니다.
+
+```{r}
+ff_mod = ff_mod %>%
+  separate(Date, c('Year', 'Month'), sep = '-', remove = FALSE)
+```
+
+반대로 두개의 컬럼을 결합해 하나의 컬럼을 만들 수도 있습니다. 예를 들어 Year와 Month를 결합해 Date2 컬럼을 만들도록 합니다.
+
+```{r}
+ff_mod %>%
+  unite('Date2', c('Year', 'Month'), sep = '-', remove = FALSE) %>% head()
+```
+
+# 데이터 형태 변경
+
+데이터는 크게 wide(가로로 긴 형태)와 long(세로로 긴 형태)로 나눌 수 있습니다. `pivot_longer()` 함수는 long 형태, `pivot_wider()` 함수는 wide 형태로 변형합니다. (기존 함수 `gather()` 와 `spread()` 함수의 이름이 변경된 것으로, 인터넷에는 기존 함수를 사용한 예제가 더 많습니다.)
+
+## 

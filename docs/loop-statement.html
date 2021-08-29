@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 14 Loop Statement | R을 이용한 데이터 랭글링</title>
+  <meta name="description" content="Chapter 14 Loop Statement | R을 이용한 데이터 랭글링" />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 14 Loop Statement | R을 이용한 데이터 랭글링" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="hyunyulhenry/lecture/data_wrangling" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 14 Loop Statement | R을 이용한 데이터 랭글링" />
+  
+  
+  
+
+<meta name="author" content="이현열 (Henry Lee)" />
+
+
+<meta name="date" content="2020-04-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="함수.html"/>
+<link rel="next" href="pipe-operator.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R을 이용한 데이터 랭글링</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#contact-information"><i class="fa fa-check"></i>Contact Information</a></li>
+</ul></li>
+<li class="part"><span><b>I 데이터 타입별 다루기</b></span></li>
+<li class="chapter" data-level="1" data-path="numbers.html"><a href="numbers.html"><i class="fa fa-check"></i><b>1</b> Numbers</a><ul>
+<li class="chapter" data-level="1.1" data-path="numbers.html"><a href="numbers.html#integer와-double의-vector-만들기"><i class="fa fa-check"></i><b>1.1</b> integer와 double의 vector 만들기</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="numbers.html"><a href="numbers.html#둘-간의-형태-바꾸기"><i class="fa fa-check"></i><b>1.1.1</b> 둘 간의 형태 바꾸기</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="numbers.html"><a href="numbers.html#비임의non-random-숫자-생성하기"><i class="fa fa-check"></i><b>1.2</b> 비임의(Non-random) 숫자 생성하기</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="numbers.html"><a href="numbers.html#seq-함수-이용"><i class="fa fa-check"></i><b>1.2.1</b> <code>seq()</code> 함수 이용</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="numbers.html"><a href="numbers.html#임의random-숫자-생성하기"><i class="fa fa-check"></i><b>1.3</b> 임의(Random) 숫자 생성하기</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="numbers.html"><a href="numbers.html#uniform-numbers"><i class="fa fa-check"></i><b>1.3.1</b> Uniform Numbers</a></li>
+<li class="chapter" data-level="1.3.2" data-path="numbers.html"><a href="numbers.html#non-uniform-numbers"><i class="fa fa-check"></i><b>1.3.2</b> Non-Uniform Numbers</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="numbers.html"><a href="numbers.html#반올림"><i class="fa fa-check"></i><b>1.4</b> 반올림</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="character-strings.html"><a href="character-strings.html"><i class="fa fa-check"></i><b>2</b> Character Strings</a><ul>
+<li class="chapter" data-level="2.1" data-path="character-strings.html"><a href="character-strings.html#문자열-기본"><i class="fa fa-check"></i><b>2.1</b> 문자열 기본</a></li>
+<li class="chapter" data-level="2.2" data-path="character-strings.html"><a href="character-strings.html#문자열-출력"><i class="fa fa-check"></i><b>2.2</b> 문자열 출력</a></li>
+<li class="chapter" data-level="2.3" data-path="character-strings.html"><a href="character-strings.html#문자열-갯수-확인"><i class="fa fa-check"></i><b>2.3</b> 문자열 갯수 확인</a></li>
+<li class="chapter" data-level="2.4" data-path="character-strings.html"><a href="character-strings.html#stringr-패키지를-이용한-문자열-다루기"><i class="fa fa-check"></i><b>2.4</b> <code>stringr</code> 패키지를 이용한 문자열 다루기</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="character-strings.html"><a href="character-strings.html#기본-사용법"><i class="fa fa-check"></i><b>2.4.1</b> 기본 사용법</a></li>
+<li class="chapter" data-level="2.4.2" data-path="character-strings.html"><a href="character-strings.html#공백whitespace-제거"><i class="fa fa-check"></i><b>2.4.2</b> 공백(Whitespace) 제거</a></li>
+<li class="chapter" data-level="2.4.3" data-path="character-strings.html"><a href="character-strings.html#문자열-자리수-채우기"><i class="fa fa-check"></i><b>2.4.3</b> 문자열 자리수 채우기</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="factors.html"><a href="factors.html"><i class="fa fa-check"></i><b>3</b> Factors</a><ul>
+<li class="chapter" data-level="3.1" data-path="factors.html"><a href="factors.html#팩터-생성-및-탐색"><i class="fa fa-check"></i><b>3.1</b> 팩터 생성 및 탐색</a></li>
+<li class="chapter" data-level="3.2" data-path="factors.html"><a href="factors.html#레벨에-순서-부여하기"><i class="fa fa-check"></i><b>3.2</b> 레벨에 순서 부여하기</a></li>
+<li class="chapter" data-level="3.3" data-path="factors.html"><a href="factors.html#순서-재정의"><i class="fa fa-check"></i><b>3.3</b> 순서 재정의</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="date.html"><a href="date.html"><i class="fa fa-check"></i><b>4</b> Date</a><ul>
+<li class="chapter" data-level="4.1" data-path="date.html"><a href="date.html#현재-날짜-및-시간"><i class="fa fa-check"></i><b>4.1</b> 현재 날짜 및 시간</a></li>
+<li class="chapter" data-level="4.2" data-path="date.html"><a href="date.html#문자열을-날짜로-변경하기"><i class="fa fa-check"></i><b>4.2</b> 문자열을 날짜로 변경하기</a></li>
+<li class="chapter" data-level="4.3" data-path="date.html"><a href="date.html#날짜-관련-정보-추출"><i class="fa fa-check"></i><b>4.3</b> 날짜 관련 정보 추출</a></li>
+<li class="chapter" data-level="4.4" data-path="date.html"><a href="date.html#날짜-순서-생성하기"><i class="fa fa-check"></i><b>4.4</b> 날짜 순서 생성하기</a></li>
+</ul></li>
+<li class="part"><span><b>II 데이터 구조 다루기</b></span></li>
+<li class="chapter" data-level="5" data-path="data-structure-basics.html"><a href="data-structure-basics.html"><i class="fa fa-check"></i><b>5</b> Data Structure Basics</a><ul>
+<li class="chapter" data-level="5.1" data-path="data-structure-basics.html"><a href="data-structure-basics.html#구조-파악하기"><i class="fa fa-check"></i><b>5.1</b> 구조 파악하기</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="vector.html"><a href="vector.html"><i class="fa fa-check"></i><b>6</b> Vector</a><ul>
+<li class="chapter" data-level="6.1" data-path="vector.html"><a href="vector.html#벡터-만들기"><i class="fa fa-check"></i><b>6.1</b> 벡터 만들기</a></li>
+<li class="chapter" data-level="6.2" data-path="vector.html"><a href="vector.html#벡터에-값-추가하기"><i class="fa fa-check"></i><b>6.2</b> 벡터에 값 추가하기</a></li>
+<li class="chapter" data-level="6.3" data-path="vector.html"><a href="vector.html#벡터-추출하기"><i class="fa fa-check"></i><b>6.3</b> 벡터 추출하기</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="list.html"><a href="list.html"><i class="fa fa-check"></i><b>7</b> List</a><ul>
+<li class="chapter" data-level="7.1" data-path="list.html"><a href="list.html#리스트-생성하기"><i class="fa fa-check"></i><b>7.1</b> 리스트 생성하기</a></li>
+<li class="chapter" data-level="7.2" data-path="list.html"><a href="list.html#기존-리스트에-데이터-추가하기"><i class="fa fa-check"></i><b>7.2</b> 기존 리스트에 데이터 추가하기</a></li>
+<li class="chapter" data-level="7.3" data-path="list.html"><a href="list.html#리스트-추출하기"><i class="fa fa-check"></i><b>7.3</b> 리스트 추출하기</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="matrix.html"><a href="matrix.html"><i class="fa fa-check"></i><b>8</b> Matrix</a><ul>
+<li class="chapter" data-level="8.1" data-path="matrix.html"><a href="matrix.html#행렬-생성하기"><i class="fa fa-check"></i><b>8.1</b> 행렬 생성하기</a></li>
+<li class="chapter" data-level="8.2" data-path="matrix.html"><a href="matrix.html#기존-행렬에-데이터-추가하기"><i class="fa fa-check"></i><b>8.2</b> 기존 행렬에 데이터 추가하기</a></li>
+<li class="chapter" data-level="8.3" data-path="matrix.html"><a href="matrix.html#행이름-및-열이름-추가하기"><i class="fa fa-check"></i><b>8.3</b> 행이름 및 열이름 추가하기</a></li>
+<li class="chapter" data-level="8.4" data-path="matrix.html"><a href="matrix.html#행렬-추출하기"><i class="fa fa-check"></i><b>8.4</b> 행렬 추출하기</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="data-frame.html"><a href="data-frame.html"><i class="fa fa-check"></i><b>9</b> Data Frame</a><ul>
+<li class="chapter" data-level="9.1" data-path="data-frame.html"><a href="data-frame.html#데이터프레임-생성하기"><i class="fa fa-check"></i><b>9.1</b> 데이터프레임 생성하기</a></li>
+<li class="chapter" data-level="9.2" data-path="data-frame.html"><a href="data-frame.html#기존-데이터프레임에-데이터-추가하기"><i class="fa fa-check"></i><b>9.2</b> 기존 데이터프레임에 데이터 추가하기</a></li>
+<li class="chapter" data-level="9.3" data-path="data-frame.html"><a href="data-frame.html#데이터프레임추출하기"><i class="fa fa-check"></i><b>9.3</b> 데이터프레임추출하기</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="missing-value.html"><a href="missing-value.html"><i class="fa fa-check"></i><b>10</b> Missing Value</a><ul>
+<li class="chapter" data-level="10.1" data-path="missing-value.html"><a href="missing-value.html#결측치-테스트"><i class="fa fa-check"></i><b>10.1</b> 결측치 테스트</a></li>
+<li class="chapter" data-level="10.2" data-path="missing-value.html"><a href="missing-value.html#결측치-제거"><i class="fa fa-check"></i><b>10.2</b> 결측치 제거</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="missing-value.html"><a href="missing-value.html#평균값-대체"><i class="fa fa-check"></i><b>10.2.1</b> 평균값 대체</a></li>
+<li class="chapter" data-level="10.2.2" data-path="missing-value.html"><a href="missing-value.html#데이터-제거"><i class="fa fa-check"></i><b>10.2.2</b> 데이터 제거</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="missing-value.html"><a href="missing-value.html#결측치-대체"><i class="fa fa-check"></i><b>10.3</b> 결측치 대체</a></li>
+</ul></li>
+<li class="part"><span><b>III 데이터 불러오기 및 내보내기</b></span></li>
+<li class="chapter" data-level="11" data-path="import-data.html"><a href="import-data.html"><i class="fa fa-check"></i><b>11</b> Import Data</a><ul>
+<li class="chapter" data-level="11.1" data-path="import-data.html"><a href="import-data.html#csv-파일-불러오기"><i class="fa fa-check"></i><b>11.1</b> csv 파일 불러오기</a><ul>
+<li class="chapter" data-level="11.1.1" data-path="import-data.html"><a href="import-data.html#기본함수"><i class="fa fa-check"></i><b>11.1.1</b> 기본함수</a></li>
+<li class="chapter" data-level="11.1.2" data-path="import-data.html"><a href="import-data.html#readr-패키지"><i class="fa fa-check"></i><b>11.1.2</b> <code>readr</code> 패키지</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="import-data.html"><a href="import-data.html#텍스트-파일-불러오기"><i class="fa fa-check"></i><b>11.2</b> 텍스트 파일 불러오기</a></li>
+<li class="chapter" data-level="11.3" data-path="import-data.html"><a href="import-data.html#엑셀-파일-불러오기"><i class="fa fa-check"></i><b>11.3</b> 엑셀 파일 불러오기</a><ul>
+<li class="chapter" data-level="11.3.1" data-path="import-data.html"><a href="import-data.html#xlsx-패키지"><i class="fa fa-check"></i><b>11.3.1</b> <code>xlsx</code> 패키지</a></li>
+<li class="chapter" data-level="11.3.2" data-path="import-data.html"><a href="import-data.html#readxl-패키지"><i class="fa fa-check"></i><b>11.3.2</b> <code>readxl</code> 패키지</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="import-data.html"><a href="import-data.html#r-object-file"><i class="fa fa-check"></i><b>11.4</b> R object File</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="exporting-data.html"><a href="exporting-data.html"><i class="fa fa-check"></i><b>12</b> Exporting Data</a><ul>
+<li class="chapter" data-level="12.1" data-path="exporting-data.html"><a href="exporting-data.html#텍스트-csv-파일-저장하기"><i class="fa fa-check"></i><b>12.1</b> 텍스트, csv 파일 저장하기</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="exporting-data.html"><a href="exporting-data.html#기본함수-1"><i class="fa fa-check"></i><b>12.1.1</b> 기본함수</a></li>
+<li class="chapter" data-level="12.1.2" data-path="exporting-data.html"><a href="exporting-data.html#readr-패키지-1"><i class="fa fa-check"></i><b>12.1.2</b> <code>readr</code> 패키지</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="exporting-data.html"><a href="exporting-data.html#엑셀-저장하기"><i class="fa fa-check"></i><b>12.2</b> 엑셀 저장하기</a></li>
+<li class="chapter" data-level="12.3" data-path="exporting-data.html"><a href="exporting-data.html#r-object-file-1"><i class="fa fa-check"></i><b>12.3</b> R object File</a></li>
+</ul></li>
+<li class="part"><span><b>IV 효율적이고 가독성 높은 코드</b></span></li>
+<li class="chapter" data-level="13" data-path="함수.html"><a href="함수.html"><i class="fa fa-check"></i><b>13</b> 함수</a><ul>
+<li class="chapter" data-level="13.1" data-path="함수.html"><a href="함수.html#함수의-요소"><i class="fa fa-check"></i><b>13.1</b> 함수의 요소</a></li>
+<li class="chapter" data-level="13.2" data-path="함수.html"><a href="함수.html#인자"><i class="fa fa-check"></i><b>13.2</b> 인자</a></li>
+<li class="chapter" data-level="13.3" data-path="함수.html"><a href="함수.html#다중-결과값-출력"><i class="fa fa-check"></i><b>13.3</b> 다중 결과값 출력</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="loop-statement.html"><a href="loop-statement.html"><i class="fa fa-check"></i><b>14</b> Loop Statement</a><ul>
+<li class="chapter" data-level="14.1" data-path="loop-statement.html"><a href="loop-statement.html#기본-제어-구문-if-for-while-등"><i class="fa fa-check"></i><b>14.1</b> 기본 제어 구문 (<code>if</code>, <code>for</code>, <code>while</code> 등)</a><ul>
+<li class="chapter" data-level="14.1.1" data-path="loop-statement.html"><a href="loop-statement.html#if-구문"><i class="fa fa-check"></i><b>14.1.1</b> <code>if</code> 구문</a></li>
+<li class="chapter" data-level="14.1.2" data-path="loop-statement.html"><a href="loop-statement.html#if...else-구문"><i class="fa fa-check"></i><b>14.1.2</b> <code>if...else</code> 구문</a></li>
+<li class="chapter" data-level="14.1.3" data-path="loop-statement.html"><a href="loop-statement.html#for-loop"><i class="fa fa-check"></i><b>14.1.3</b> <code>for loop</code></a></li>
+<li class="chapter" data-level="14.1.4" data-path="loop-statement.html"><a href="loop-statement.html#while-loop"><i class="fa fa-check"></i><b>14.1.4</b> <code>while loop</code></a></li>
+<li class="chapter" data-level="14.1.5" data-path="loop-statement.html"><a href="loop-statement.html#next"><i class="fa fa-check"></i><b>14.1.5</b> <code>next</code></a></li>
+</ul></li>
+<li class="chapter" data-level="14.2" data-path="loop-statement.html"><a href="loop-statement.html#apply-계열-함수"><i class="fa fa-check"></i><b>14.2</b> Apply 계열 함수</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="loop-statement.html"><a href="loop-statement.html#apply"><i class="fa fa-check"></i><b>14.2.1</b> <code>apply()</code></a></li>
+<li class="chapter" data-level="14.2.2" data-path="loop-statement.html"><a href="loop-statement.html#lapply"><i class="fa fa-check"></i><b>14.2.2</b> <code>lapply()</code></a></li>
+<li class="chapter" data-level="14.2.3" data-path="loop-statement.html"><a href="loop-statement.html#sapply"><i class="fa fa-check"></i><b>14.2.3</b> <code>sapply()</code></a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="loop-statement.html"><a href="loop-statement.html#기타-함수"><i class="fa fa-check"></i><b>14.3</b> 기타 함수</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="pipe-operator.html"><a href="pipe-operator.html"><i class="fa fa-check"></i><b>15</b> Pipe Operator (<code>%&gt;%</code>)</a><ul>
+<li class="chapter" data-level="15.1" data-path="pipe-operator.html"><a href="pipe-operator.html#pipe-operator-1"><i class="fa fa-check"></i><b>15.1</b> Pipe Operator (<code>%&gt;%</code>)</a><ul>
+<li class="chapter" data-level="15.1.1" data-path="pipe-operator.html"><a href="pipe-operator.html#중첩"><i class="fa fa-check"></i><b>15.1.1</b> 중첩</a></li>
+<li class="chapter" data-level="15.1.2" data-path="pipe-operator.html"><a href="pipe-operator.html#다중-객체"><i class="fa fa-check"></i><b>15.1.2</b> 다중 객체</a></li>
+<li class="chapter" data-level="15.1.3" data-path="pipe-operator.html"><a href="pipe-operator.html#section"><i class="fa fa-check"></i><b>15.1.3</b> <code>%&gt;%</code></a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>V 데이터 구조 변형하기</b></span></li>
+<li class="chapter" data-level="16" data-path="tidyr을-이용한-데이터-모양-바꾸기.html"><a href="tidyr을-이용한-데이터-모양-바꾸기.html"><i class="fa fa-check"></i><b>16</b> <code>tidyr</code>을 이용한 데이터 모양 바꾸기</a><ul>
+<li class="chapter" data-level="16.1" data-path="tidyr을-이용한-데이터-모양-바꾸기.html"><a href="tidyr을-이용한-데이터-모양-바꾸기.html#세로로-긴-데이터-만들기"><i class="fa fa-check"></i><b>16.1</b> 세로로 긴 데이터 만들기</a></li>
+<li class="chapter" data-level="16.2" data-path="tidyr을-이용한-데이터-모양-바꾸기.html"><a href="tidyr을-이용한-데이터-모양-바꾸기.html#가로로-긴-데이터-만들기"><i class="fa fa-check"></i><b>16.2</b> 가로로 긴 데이터 만들기</a></li>
+<li class="chapter" data-level="16.3" data-path="tidyr을-이용한-데이터-모양-바꾸기.html"><a href="tidyr을-이용한-데이터-모양-바꾸기.html#하나의-열을-여러-열로-나누기"><i class="fa fa-check"></i><b>16.3</b> 하나의 열을 여러 열로 나누기</a></li>
+<li class="chapter" data-level="16.4" data-path="tidyr을-이용한-데이터-모양-바꾸기.html"><a href="tidyr을-이용한-데이터-모양-바꾸기.html#여러-열을-하나로-합치기"><i class="fa fa-check"></i><b>16.4</b> 여러 열을 하나로 합치기</a></li>
+<li class="chapter" data-level="16.5" data-path="tidyr을-이용한-데이터-모양-바꾸기.html"><a href="tidyr을-이용한-데이터-모양-바꾸기.html#tidyr의-기타-함수"><i class="fa fa-check"></i><b>16.5</b> <code>tidyr</code>의 기타 함수</a><ul>
+<li class="chapter" data-level="16.5.1" data-path="tidyr을-이용한-데이터-모양-바꾸기.html"><a href="tidyr을-이용한-데이터-모양-바꾸기.html#fill"><i class="fa fa-check"></i><b>16.5.1</b> <code>fill()</code></a></li>
+<li class="chapter" data-level="16.5.2" data-path="tidyr을-이용한-데이터-모양-바꾸기.html"><a href="tidyr을-이용한-데이터-모양-바꾸기.html#replce_na"><i class="fa fa-check"></i><b>16.5.2</b> <code>replce_na()</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="dplyr을-이용한-데이터-변형하기.html"><a href="dplyr을-이용한-데이터-변형하기.html"><i class="fa fa-check"></i><b>17</b> <code>dplyr</code>을 이용한 데이터 변형하기</a><ul>
+<li class="chapter" data-level="17.1" data-path="dplyr을-이용한-데이터-변형하기.html"><a href="dplyr을-이용한-데이터-변형하기.html#select-원하는-열-선택하기"><i class="fa fa-check"></i><b>17.1</b> <code>select()</code>: 원하는 열 선택하기</a></li>
+<li class="chapter" data-level="17.2" data-path="dplyr을-이용한-데이터-변형하기.html"><a href="dplyr을-이용한-데이터-변형하기.html#rename-이름-새로-부여하기"><i class="fa fa-check"></i><b>17.2</b> <code>rename()</code>: 이름 새로 부여하기</a></li>
+<li class="chapter" data-level="17.3" data-path="dplyr을-이용한-데이터-변형하기.html"><a href="dplyr을-이용한-데이터-변형하기.html#filter-필터링"><i class="fa fa-check"></i><b>17.3</b> <code>filter()</code>: 필터링</a></li>
+<li class="chapter" data-level="17.4" data-path="dplyr을-이용한-데이터-변형하기.html"><a href="dplyr을-이용한-데이터-변형하기.html#group_by-원하는-조건으로-그룹화"><i class="fa fa-check"></i><b>17.4</b> <code>group_by()</code>: 원하는 조건으로 그룹화</a></li>
+<li class="chapter" data-level="17.5" data-path="dplyr을-이용한-데이터-변형하기.html"><a href="dplyr을-이용한-데이터-변형하기.html#summarize-요약값-계산하기"><i class="fa fa-check"></i><b>17.5</b> <code>summarize()</code>: 요약값 계산하기</a></li>
+<li class="chapter" data-level="17.6" data-path="dplyr을-이용한-데이터-변형하기.html"><a href="dplyr을-이용한-데이터-변형하기.html#arrange-데이터-정렬하기"><i class="fa fa-check"></i><b>17.6</b> <code>arrange()</code>: 데이터 정렬하기</a></li>
+<li class="chapter" data-level="17.7" data-path="dplyr을-이용한-데이터-변형하기.html"><a href="dplyr을-이용한-데이터-변형하기.html#join-데이터-합치기"><i class="fa fa-check"></i><b>17.7</b> join(): 데이터 합치기</a></li>
+<li class="chapter" data-level="17.8" data-path="dplyr을-이용한-데이터-변형하기.html"><a href="dplyr을-이용한-데이터-변형하기.html#mutate-새로운-열-생성하기"><i class="fa fa-check"></i><b>17.8</b> <code>mutate()</code>: 새로운 열 생성하기</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="http://henryquant.blogspot.com/" target="blank">Henry's Quantopia</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R을 이용한 데이터 랭글링</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="loop-statement" class="section level1">
+<h1><span class="header-section-number">Chapter 14</span> Loop Statement</h1>
+<p>루프 구문을 사용할 경우 반복된 작업을 간단히 수행할 수 있습니다.</p>
+<div id="기본-제어-구문-if-for-while-등" class="section level2">
+<h2><span class="header-section-number">14.1</span> 기본 제어 구문 (<code>if</code>, <code>for</code>, <code>while</code> 등)</h2>
+<div id="if-구문" class="section level3">
+<h3><span class="header-section-number">14.1.1</span> <code>if</code> 구문</h3>
+<p>if 구문은 다음과 같이 구성됩니다.</p>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb389-1" data-line-number="1"><span class="cf">if</span> (test_expression) {</a>
+<a class="sourceLine" id="cb389-2" data-line-number="2">  statement</a>
+<a class="sourceLine" id="cb389-3" data-line-number="3">}</a></code></pre></div>
+<p>괄호 안의 test_expression이 TRUE일 경우에만 statement 코드가 실행됩니다.</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb390-1" data-line-number="1">x =<span class="st"> </span><span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">-2</span>, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb390-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb390-3" data-line-number="3"><span class="cf">if</span> (<span class="kw">any</span>(x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)) {</a>
+<a class="sourceLine" id="cb390-4" data-line-number="4">  <span class="kw">print</span>(<span class="st">&#39;x contains negative number&#39;</span>)</a>
+<a class="sourceLine" id="cb390-5" data-line-number="5">}</a></code></pre></div>
+<pre><code>## [1] &quot;x contains negative number&quot;</code></pre>
+<p>만일 x중 음수가 존재하면 <em>x contains negative number</em>가 출력되는 조건이며, -2가 음수이므로 조건을 만족합니다.</p>
+<div class="sourceCode" id="cb392"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb392-1" data-line-number="1">y =<span class="st"> </span><span class="kw">c</span> (<span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb392-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb392-3" data-line-number="3"><span class="cf">if</span> (<span class="kw">any</span> (y <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)) {</a>
+<a class="sourceLine" id="cb392-4" data-line-number="4">  <span class="kw">print</span> (<span class="st">&quot;y contains negative numbers&quot;</span>)</a>
+<a class="sourceLine" id="cb392-5" data-line-number="5">}</a></code></pre></div>
+<p>y에는 음수가 존재하지 않으므로, 구문이 실행되지 않습니다.</p>
+</div>
+<div id="if...else-구문" class="section level3">
+<h3><span class="header-section-number">14.1.2</span> <code>if...else</code> 구문</h3>
+<p>if 구문만 존재할 시 이를 만족하지 않는 경우 아무런 구문도 실행되지 않습니다. if else 구문의 경우 조건을 만족하지 않을 경우 else에 해당하는 구문이 실행됩니다.</p>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb393-1" data-line-number="1"><span class="cf">if</span> (test_expression) {</a>
+<a class="sourceLine" id="cb393-2" data-line-number="2">  statement <span class="dv">1</span></a>
+<a class="sourceLine" id="cb393-3" data-line-number="3">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb393-4" data-line-number="4">  statement <span class="dv">2</span></a>
+<a class="sourceLine" id="cb393-5" data-line-number="5">}</a></code></pre></div>
+<p>만일 test_expression 구문이 TRUE이면 statement 1이 실행되며, 그렇지 않을 경우 statement 2가 실행됩니다.</p>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb394-1" data-line-number="1">y =<span class="st"> </span><span class="kw">c</span> (<span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb394-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb394-3" data-line-number="3"><span class="cf">if</span> (<span class="kw">any</span> (y <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>)) {</a>
+<a class="sourceLine" id="cb394-4" data-line-number="4">  <span class="kw">print</span> (<span class="st">&quot;y contains negative numbers&quot;</span>)</a>
+<a class="sourceLine" id="cb394-5" data-line-number="5">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb394-6" data-line-number="6">  <span class="kw">print</span> (<span class="st">&quot;y contains all positive numbers&quot;</span>)</a>
+<a class="sourceLine" id="cb394-7" data-line-number="7">}</a></code></pre></div>
+<pre><code>## [1] &quot;y contains all positive numbers&quot;</code></pre>
+<p>y에 음수가 존재하는 if구문이 FALSE 이므로, else에 해당하는 메세지가 출력됩니다.</p>
+<p>if…else 구문은 <code>ifelse()</code> 함수로 간단히 나타낼 수도 있습니다.</p>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb396-1" data-line-number="1">x =<span class="st"> </span><span class="kw">c</span> (<span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb396-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb396-3" data-line-number="3"><span class="kw">ifelse</span>(<span class="kw">any</span>(x <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>), <span class="st">&quot;x contains negative numbers&quot;</span>, <span class="st">&quot;x contains all positive numbers&quot;</span>)</a></code></pre></div>
+<pre><code>## [1] &quot;x contains all positive numbers&quot;</code></pre>
+<p>또한 if와 else 사이에 else if 조건을 통해, 여러 조건을 추가할 수도 있습니다.</p>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb398-1" data-line-number="1">x =<span class="st"> </span><span class="dv">7</span></a>
+<a class="sourceLine" id="cb398-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb398-3" data-line-number="3"><span class="cf">if</span> (x <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>) {</a>
+<a class="sourceLine" id="cb398-4" data-line-number="4">  <span class="kw">print</span> (<span class="st">&quot;x exceeds acceptable tolerance levels&quot;</span>)</a>
+<a class="sourceLine" id="cb398-5" data-line-number="5">} <span class="cf">else</span> <span class="cf">if</span>(x <span class="op">&gt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>x <span class="op">&lt;</span><span class="st"> </span><span class="dv">10</span>) {</a>
+<a class="sourceLine" id="cb398-6" data-line-number="6">  <span class="kw">print</span> (<span class="st">&quot;x is within acceptable tolerance levels&quot;</span>)</a>
+<a class="sourceLine" id="cb398-7" data-line-number="7">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb398-8" data-line-number="8">  <span class="kw">print</span> (<span class="st">&quot;x is negative&quot;</span>)</a>
+<a class="sourceLine" id="cb398-9" data-line-number="9">}</a></code></pre></div>
+<pre><code>## [1] &quot;x is within acceptable tolerance levels&quot;</code></pre>
+<p>위 조건은 다음과 같습니다.</p>
+<ol style="list-style-type: decimal">
+<li>x가 10 이상일 경우 <strong>x exceeds acceptable tolerance levels</strong>을 출력합니다.</li>
+<li>만일 x가 10 이상, 10 미만일경우 <strong>x is within acceptable tolerance levels</strong>을 출력합니다.</li>
+<li>그렇지 않을 경우 <strong>x is negative</strong>을 출력합니다.</li>
+</ol>
+<p>x는 7 이므로 else에 해당하는 내용이 출력됩니다.</p>
+</div>
+<div id="for-loop" class="section level3">
+<h3><span class="header-section-number">14.1.3</span> <code>for loop</code></h3>
+<p>for loop 구문은 특정한 부분의 코드가 반복적으로 수행될 수 있도록 합니다.</p>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb400-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span>) {</a>
+<a class="sourceLine" id="cb400-2" data-line-number="2">  <span class="op">&lt;</span>code<span class="op">:</span><span class="st"> </span>do stuff here with i<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb400-3" data-line-number="3">}</a></code></pre></div>
+<p>먼저 i에 1이 들어간 뒤 code에 해당하는 부분이 실행됩니다. 그 후, i에 2가 들어간 뒤 다시 code가 실행되며 이 작업이 100까지 반복됩니다. 실제 예제를 살펴보도록 하겠습니다.</p>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb401-1" data-line-number="1"><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2010</span><span class="op">:</span><span class="dv">2016</span>) {</a>
+<a class="sourceLine" id="cb401-2" data-line-number="2">  output =<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;The year is&quot;</span>, i)</a>
+<a class="sourceLine" id="cb401-3" data-line-number="3">  <span class="kw">print</span>(output)</a>
+<a class="sourceLine" id="cb401-4" data-line-number="4">}</a></code></pre></div>
+<pre><code>## [1] &quot;The year is 2010&quot;
+## [1] &quot;The year is 2011&quot;
+## [1] &quot;The year is 2012&quot;
+## [1] &quot;The year is 2013&quot;
+## [1] &quot;The year is 2014&quot;
+## [1] &quot;The year is 2015&quot;
+## [1] &quot;The year is 2016&quot;</code></pre>
+<p>i에 2010부터 2016 까지 대입되어 코드가 실행됩니다.</p>
+</div>
+<div id="while-loop" class="section level3">
+<h3><span class="header-section-number">14.1.4</span> <code>while loop</code></h3>
+<p>while 구문은 for 구문과 비슷하며, 조건이 충족되는한 루프가 계속해서 실행됩니다.</p>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb403-1" data-line-number="1">counter =<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb403-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb403-3" data-line-number="3"><span class="cf">while</span> (test_expression) {</a>
+<a class="sourceLine" id="cb403-4" data-line-number="4">  statement</a>
+<a class="sourceLine" id="cb403-5" data-line-number="5">  counter =<span class="st"> </span>counter <span class="op">+</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb403-6" data-line-number="6">}</a></code></pre></div>
+<p>test_expression이 TRUE이면 statement 코드가 실행되며, counter를 1씩 더합니다. 즉, test_expression이 FALSE가 될때까지 loop가 반복됩니다.</p>
+<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb404-1" data-line-number="1">counter =<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb404-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb404-3" data-line-number="3"><span class="cf">while</span> (counter <span class="op">&lt;=</span><span class="st"> </span><span class="dv">5</span>) {</a>
+<a class="sourceLine" id="cb404-4" data-line-number="4">  <span class="kw">print</span>(counter)</a>
+<a class="sourceLine" id="cb404-5" data-line-number="5">  counter =<span class="st"> </span>counter <span class="op">+</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb404-6" data-line-number="6">}</a></code></pre></div>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+## [1] 5</code></pre>
+<p>counter가 5 이하일 경우 이를 출력하며, 6일 경우 test_expression이 FALSE가 되어 loop가 멈추게 됩니다.</p>
+</div>
+<div id="next" class="section level3">
+<h3><span class="header-section-number">14.1.5</span> <code>next</code></h3>
+<p>next 명령어는 loop 구문에서 특정 단계를 실행하지 않고 넘어가기 위해 사용됩니다.</p>
+<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb406-1" data-line-number="1">x =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></a>
+<a class="sourceLine" id="cb406-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb406-3" data-line-number="3"><span class="cf">for</span> (i <span class="cf">in</span> x) {</a>
+<a class="sourceLine" id="cb406-4" data-line-number="4">  <span class="cf">if</span> (i <span class="op">==</span><span class="st"> </span><span class="dv">3</span>) {</a>
+<a class="sourceLine" id="cb406-5" data-line-number="5">    <span class="cf">next</span></a>
+<a class="sourceLine" id="cb406-6" data-line-number="6">  }</a>
+<a class="sourceLine" id="cb406-7" data-line-number="7">  <span class="kw">print</span>(i)</a>
+<a class="sourceLine" id="cb406-8" data-line-number="8">}</a></code></pre></div>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 4
+## [1] 5</code></pre>
+<p>일반적인 for loop 구문으로써 i를 출력하며, if 구문을 통해 i가 3일 경우 명령을 실행하지 않고 다음 for 구문(i = 4)으로 건너뜁니다.</p>
+</div>
+</div>
+<div id="apply-계열-함수" class="section level2">
+<h2><span class="header-section-number">14.2</span> Apply 계열 함수</h2>
+<p>apply 계열 함수는 loop 구문과 비슷한 역할을 하며, 훨씬 간결하게 표현할 수 있습니다.</p>
+<div id="apply" class="section level3">
+<h3><span class="header-section-number">14.2.1</span> <code>apply()</code></h3>
+<p><code>apply()</code> 함수는 매트릭스나 데이터프레임의 행 혹은 열단위 계산에 자주 사용됩니다. 해당 함수는 다음과 같이 구성됩니다.</p>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb408-1" data-line-number="1"><span class="kw">apply</span>(x, MARGIN, FUN, ...)</a></code></pre></div>
+<ul>
+<li>x: 매트릭스, 데이터프레임, 혹은 어레이</li>
+<li>MARGIN: 함수가 적용될 벡. 1은 행을, 2는 열을, c(1, 2)는 행과 열을 의미</li>
+<li>FUN: 적용될 함수</li>
+<li>…: 기타</li>
+</ul>
+<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb409-1" data-line-number="1"><span class="kw">head</span>(mtcars)</a></code></pre></div>
+<pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1</code></pre>
+<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb411-1" data-line-number="1"><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, mean)</a></code></pre></div>
+<pre><code>##      mpg      cyl     disp       hp     drat       wt     qsec       vs 
+##  20.0906   6.1875 230.7219 146.6875   3.5966   3.2172  17.8487   0.4375 
+##       am     gear     carb 
+##   0.4062   3.6875   2.8125</code></pre>
+<p>mtcars 데이터에서 2, 즉 열의 방향으로 평균(mean)을 구합니다.</p>
+<div class="sourceCode" id="cb413"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb413-1" data-line-number="1"><span class="kw">apply</span>(mtcars, <span class="dv">1</span>, sum)</a></code></pre></div>
+<pre><code>##           Mazda RX4       Mazda RX4 Wag          Datsun 710      Hornet 4 Drive 
+##               329.0               329.8               259.6               426.1 
+##   Hornet Sportabout             Valiant          Duster 360           Merc 240D 
+##               590.3               385.5               656.9               271.0 
+##            Merc 230            Merc 280           Merc 280C          Merc 450SE 
+##               299.6               350.5               349.7               510.7 
+##          Merc 450SL         Merc 450SLC  Cadillac Fleetwood Lincoln Continental 
+##               511.5               509.9               728.6               726.6 
+##   Chrysler Imperial            Fiat 128         Honda Civic      Toyota Corolla 
+##               725.7               213.8               195.2               207.0 
+##       Toyota Corona    Dodge Challenger         AMC Javelin          Camaro Z28 
+##               273.8               519.6               506.1               646.3 
+##    Pontiac Firebird           Fiat X1-9       Porsche 914-2        Lotus Europa 
+##               631.2               208.2               272.6               273.7 
+##      Ford Pantera L        Ferrari Dino       Maserati Bora          Volvo 142E 
+##               670.7               379.6               694.7               288.9</code></pre>
+<p>이번에는 1 즉 행의 방향으로 합계(sum)를 구합니다.</p>
+<div class="sourceCode" id="cb415"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb415-1" data-line-number="1"><span class="kw">apply</span>(mtcars, <span class="dv">2</span>, quantile, <span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.10</span>, <span class="fl">0.25</span>, <span class="fl">0.05</span>, <span class="fl">0.75</span>, <span class="fl">0.90</span>))</a></code></pre></div>
+<pre><code>##       mpg cyl   disp     hp  drat    wt  qsec vs am gear carb
+## 10% 14.34   4  80.61  66.00 3.007 1.956 15.53  0  0    3    1
+## 25% 15.43   4 120.83  96.50 3.080 2.581 16.89  0  0    3    2
+## 5%  12.00   4  77.35  63.65 2.853 1.736 15.05  0  0    3    1
+## 75% 22.80   8 326.00 180.00 3.920 3.610 18.90  1  1    4    4
+## 90% 30.09   8 396.00 243.50 4.209 4.048 19.99  1  1    5    4</code></pre>
+<p>각 열의 분위수(quantile)를 구하게 되며, 분위는 probs 인자를 통해 직접 입력할 수 있습니다.</p>
+</div>
+<div id="lapply" class="section level3">
+<h3><span class="header-section-number">14.2.2</span> <code>lapply()</code></h3>
+<p><code>lapply()</code> 함수는 리스트에 적용되며, 결과 또한 리스트로 반환됩니다. 해당 함수는 다음과 같이 구성됩니다.</p>
+<div class="sourceCode" id="cb417"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb417-1" data-line-number="1"><span class="kw">lapply</span>(x, FUN, ...)</a></code></pre></div>
+<ul>
+<li>x: 리스트</li>
+<li>FUN: 적용될 함수</li>
+<li>…: 기타</li>
+</ul>
+<div class="sourceCode" id="cb418"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb418-1" data-line-number="1">data =<span class="st"> </span><span class="kw">list</span>(<span class="dt">item1 =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,</a>
+<a class="sourceLine" id="cb418-2" data-line-number="2">            <span class="dt">item2 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb418-3" data-line-number="3">            <span class="dt">item3 =</span> <span class="kw">rnorm</span>(<span class="dv">20</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb418-4" data-line-number="4">            <span class="dt">item4 =</span> <span class="kw">rnorm</span>(<span class="dv">100</span>, <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb418-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb418-6" data-line-number="6">data</a></code></pre></div>
+<pre><code>## $item1
+## [1] 1 2 3 4
+## 
+## $item2
+##  [1] -0.56048 -0.23018  1.55871  0.07051  0.12929  1.71506  0.46092 -1.26506
+##  [9] -0.68685 -0.44566
+## 
+## $item3
+##  [1]  2.22408  1.35981  1.40077  1.11068  0.44416  2.78691  1.49785 -0.96662
+##  [9]  1.70136  0.52721 -0.06782  0.78203 -0.02600  0.27111  0.37496 -0.68669
+## [17]  1.83779  1.15337 -0.13814  2.25381
+## 
+## $item4
+##   [1] 5.426 4.705 5.895 5.878 5.822 5.689 5.554 4.938 4.694 4.620 4.305 4.792
+##  [13] 3.735 7.169 6.208 3.877 4.597 4.533 5.780 4.917 5.253 4.971 4.957 6.369
+##  [25] 4.774 6.516 3.451 5.585 5.124 5.216 5.380 4.498 4.667 3.981 3.928 5.304
+##  [37] 5.448 5.053 5.922 7.050 4.509 2.691 6.006 4.291 4.312 6.026 4.715 3.779
+##  [49] 5.181 4.861 5.006 5.385 4.629 5.644 4.780 5.332 6.097 5.435 4.674 6.149
+##  [61] 5.994 5.548 5.239 4.372 6.361 4.400 7.187 6.533 4.764 3.974 4.290 5.257
+##  [73] 4.753 4.652 4.048 4.955 4.215 3.332 4.620 5.919 4.425 5.608 3.382 4.944
+##  [85] 5.519 5.301 5.106 4.359 4.150 3.976 5.118 4.053 4.509 4.744 6.844 4.348
+##  [97] 5.235 5.078 4.038 4.929</code></pre>
+<div class="sourceCode" id="cb420"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb420-1" data-line-number="1"><span class="kw">lapply</span>(data, mean)</a></code></pre></div>
+<pre><code>## $item1
+## [1] 2.5
+## 
+## $item2
+## [1] 0.07463
+## 
+## $item3
+## [1] 0.892
+## 
+## $item4
+## [1] 5.022</code></pre>
+<p><code>lapply()</code> 함수를 통해 각 항목의 평균을 구하며, 결과 또한 리스트 형태입니다.</p>
+<div class="sourceCode" id="cb422"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb422-1" data-line-number="1">beaver_data =<span class="st"> </span><span class="kw">list</span>(<span class="dt">beaver1 =</span> beaver1, <span class="dt">beaver2 =</span> beaver2)</a>
+<a class="sourceLine" id="cb422-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb422-3" data-line-number="3"><span class="kw">lapply</span>(beaver_data, head)</a></code></pre></div>
+<pre><code>## $beaver1
+##   day time  temp activ
+## 1 346  840 36.33     0
+## 2 346  850 36.34     0
+## 3 346  900 36.35     0
+## 4 346  910 36.42     0
+## 5 346  920 36.55     0
+## 6 346  930 36.69     0
+## 
+## $beaver2
+##   day time  temp activ
+## 1 307  930 36.58     0
+## 2 307  940 36.73     0
+## 3 307  950 36.93     0
+## 4 307 1000 37.15     0
+## 5 307 1010 37.23     0
+## 6 307 1020 37.24     0</code></pre>
+<p>위 데이터의 각 항목에서 열 별 평균을 구하고자 할 경우 <code>lapply()</code> 함수 만으로는 계산이 불가능합니다. 이러한 경우 해당 함수 내부에 직접 <code>function()</code>을 정의하여 복잡한 계산을 수행할 수 있습니다.</p>
+<div class="sourceCode" id="cb424"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb424-1" data-line-number="1"><span class="kw">lapply</span>(beaver_data, <span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb424-2" data-line-number="2">  <span class="kw">round</span>(<span class="kw">apply</span>(x, <span class="dv">2</span>, mean), <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb424-3" data-line-number="3">})</a></code></pre></div>
+<pre><code>## $beaver1
+##     day    time    temp   activ 
+##  346.20 1312.02   36.86    0.05 
+## 
+## $beaver2
+##     day    time    temp   activ 
+##  307.13 1446.20   37.60    0.62</code></pre>
+<p><code>function(x)</code>를 통해 각 항목에 적용될 함수를 직접 정의할 수 있으며, 열의 방향으로 평균을 구한 뒤 소수 둘째 자리까지 반올림을 하게 됩니다.</p>
+</div>
+<div id="sapply" class="section level3">
+<h3><span class="header-section-number">14.2.3</span> <code>sapply()</code></h3>
+<p><code>sapply()</code> 함수는 <code>lapply()</code> 함수와 거의 동일하며, 결과가 리스트가 아닌 벡터 혹은 매트릭스로 출력된다는 점만 차이가 있습니다.</p>
+<div class="sourceCode" id="cb426"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb426-1" data-line-number="1"><span class="kw">lapply</span>(beaver_data, <span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb426-2" data-line-number="2">  <span class="kw">round</span>(<span class="kw">apply</span>(x, <span class="dv">2</span>, mean), <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb426-3" data-line-number="3">})</a></code></pre></div>
+<pre><code>## $beaver1
+##     day    time    temp   activ 
+##  346.20 1312.02   36.86    0.05 
+## 
+## $beaver2
+##     day    time    temp   activ 
+##  307.13 1446.20   37.60    0.62</code></pre>
+<div class="sourceCode" id="cb428"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb428-1" data-line-number="1"><span class="kw">sapply</span>(beaver_data, <span class="cf">function</span>(x) {</a>
+<a class="sourceLine" id="cb428-2" data-line-number="2">  <span class="kw">round</span>(<span class="kw">apply</span>(x, <span class="dv">2</span>, mean), <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb428-3" data-line-number="3">})</a></code></pre></div>
+<pre><code>##       beaver1 beaver2
+## day    346.20  307.13
+## time  1312.02 1446.20
+## temp    36.86   37.60
+## activ    0.05    0.62</code></pre>
+</div>
+</div>
+<div id="기타-함수" class="section level2">
+<h2><span class="header-section-number">14.3</span> 기타 함수</h2>
+<p>열과 행이 합계나 평균을 구할 때는 <code>apply()</code> 함수보다 간단하게 표현할 수 있는 함수들이 있습니다.</p>
+<div class="sourceCode" id="cb430"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb430-1" data-line-number="1"><span class="kw">rowSums</span>(mtcars)</a></code></pre></div>
+<pre><code>##           Mazda RX4       Mazda RX4 Wag          Datsun 710      Hornet 4 Drive 
+##               329.0               329.8               259.6               426.1 
+##   Hornet Sportabout             Valiant          Duster 360           Merc 240D 
+##               590.3               385.5               656.9               271.0 
+##            Merc 230            Merc 280           Merc 280C          Merc 450SE 
+##               299.6               350.5               349.7               510.7 
+##          Merc 450SL         Merc 450SLC  Cadillac Fleetwood Lincoln Continental 
+##               511.5               509.9               728.6               726.6 
+##   Chrysler Imperial            Fiat 128         Honda Civic      Toyota Corolla 
+##               725.7               213.8               195.2               207.0 
+##       Toyota Corona    Dodge Challenger         AMC Javelin          Camaro Z28 
+##               273.8               519.6               506.1               646.3 
+##    Pontiac Firebird           Fiat X1-9       Porsche 914-2        Lotus Europa 
+##               631.2               208.2               272.6               273.7 
+##      Ford Pantera L        Ferrari Dino       Maserati Bora          Volvo 142E 
+##               670.7               379.6               694.7               288.9</code></pre>
+<div class="sourceCode" id="cb432"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb432-1" data-line-number="1"><span class="kw">colSums</span>(mtcars)</a></code></pre></div>
+<pre><code>##    mpg    cyl   disp     hp   drat     wt   qsec     vs     am   gear   carb 
+##  642.9  198.0 7383.1 4694.0  115.1  103.0  571.2   14.0   13.0  118.0   90.0</code></pre>
+<p><code>rowSums()</code> 함수는 행의 합계를, <code>colSums()</code> 함수는 열의 합계는 구하며 이는 <code>apply(mtcars, 1 or 2, sum)</code> 과 동일합니다.</p>
+<div class="sourceCode" id="cb434"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb434-1" data-line-number="1"><span class="kw">rowMeans</span>(mtcars)</a></code></pre></div>
+<pre><code>##           Mazda RX4       Mazda RX4 Wag          Datsun 710      Hornet 4 Drive 
+##               29.91               29.98               23.60               38.74 
+##   Hornet Sportabout             Valiant          Duster 360           Merc 240D 
+##               53.66               35.05               59.72               24.63 
+##            Merc 230            Merc 280           Merc 280C          Merc 450SE 
+##               27.23               31.86               31.79               46.43 
+##          Merc 450SL         Merc 450SLC  Cadillac Fleetwood Lincoln Continental 
+##               46.50               46.35               66.23               66.06 
+##   Chrysler Imperial            Fiat 128         Honda Civic      Toyota Corolla 
+##               65.97               19.44               17.74               18.81 
+##       Toyota Corona    Dodge Challenger         AMC Javelin          Camaro Z28 
+##               24.89               47.24               46.01               58.75 
+##    Pontiac Firebird           Fiat X1-9       Porsche 914-2        Lotus Europa 
+##               57.38               18.93               24.78               24.88 
+##      Ford Pantera L        Ferrari Dino       Maserati Bora          Volvo 142E 
+##               60.97               34.51               63.16               26.26</code></pre>
+<div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb436-1" data-line-number="1"><span class="kw">colMeans</span>(mtcars)</a></code></pre></div>
+<pre><code>##      mpg      cyl     disp       hp     drat       wt     qsec       vs 
+##  20.0906   6.1875 230.7219 146.6875   3.5966   3.2172  17.8487   0.4375 
+##       am     gear     carb 
+##   0.4062   3.6875   2.8125</code></pre>
+<p><code>rowMeans()</code>와 <code>colMeans()</code> 함수 역시 각각 행과 열의 평균을 구합니다.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="함수.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="pipe-operator.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+},
+"split_bib": false
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

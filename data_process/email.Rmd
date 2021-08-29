@@ -1,0 +1,10 @@
+---
+output: blastula::blastula_email 
+--- 
+
+Hi Team,
+This *important* forecast needs to go out today.
+
+```{r echo=FALSE}
+Sys.time()
+```

@@ -1,0 +1,41 @@
+---
+title: "ggplot을 이용한 데이터 시각화"
+# output:
+#   html_document:
+#     toc: true
+#     toc_depth: 2
+#     toc_float: true
+#     number_sections: true
+#     smooth_scroll: true
+#     theme: united
+output:
+  rmdformats::html_clean:
+    self_contained: true
+    thumbnails: true
+    lightbox: true
+    gallery: false
+    highlight: tango
+    use_bookdown: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 테스트
+
+```{r}
+head(mtcars)
+```
+
+## 테스트
+
+```{r}
+head(mtcars)
+```
+
+# 두번째 장
+
+```{r}
+head(mtcars)
+```
