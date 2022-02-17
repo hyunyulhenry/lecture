@@ -1,6 +1,6 @@
 START TRANSACTION;
-CREATE DATABASE IF NOT EXISTS sql_test;
-USE sql_test;
+CREATE DATABASE IF NOT EXISTS database;
+USE database;
 
 CREATE TABLE categories (
   CategoryID int NOT NULL,
