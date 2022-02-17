@@ -1,6 +1,6 @@
 START TRANSACTION;
-CREATE database IF NOT EXISTS customer;
-USE customer;
+CREATE database IF NOT EXISTS shop_database;
+USE shop_database;
 
 CREATE TABLE categories (
   CategoryID int NOT NULL,
